@@ -9,11 +9,10 @@ prompt = {'\sigma [0 if revolute, 1 if prismatic]:',
     'link radius [m]:',
     'mass of each link [kg]:',  
     'buoyancy of each link [N]:', 
-    'main axis of inertia tensor [ex.: x, Y, z]:',
     'R_0 rotation matrix [ex.: rotx(deg)]:'};
 dlgtitle = 'Input parameters';
 dims = [1 45];
-definput = {'zeros(n,1)','[]','[]','[]','[]','[]','eye(3)'};
+definput = {'zeros(n,1)','[]','[]','[]','[]','eye(3)'};
 options.Interpreter = 'tex';
 answer = inputdlg(prompt,dlgtitle,dims,definput,options);
 
@@ -28,8 +27,7 @@ l = str2num(answer{2});
 r = str2num(answer{3});
 m = str2num(answer{4});
 B = str2num(answer{5});
-eval(strcat('orient = ',answer{6}));
-Rot0 = str2num(answer{7});
+Rot0 = str2num(answer{6});
 
 q = sym('q', [n 1], 'real'); % generalized coordinates vector
 
@@ -48,6 +46,8 @@ answer = inputdlg(prompt,'Link-based frame mass centers', [1 55]);
 for i = 1:n
     c{i} = str2num(answer{i}); 
 end
+
+dq = sym('dq', [n 1], 'real'); % joint velocities
 
 %% Constants
 g = 9.81; % gravitational acceleration constant
@@ -103,11 +103,13 @@ for i = 1:n
 end
 
 %% Inertia tensor for each link relative to the inertial frame 
+% computation depends on COM offset
 I = cell(1,n);
 for i = 1:n
-    if (orient(i) == 'x') || (orient(i) == 'X')
+    [~, index] = max(abs(c{i}));
+    if (index == 1) 
         I{i} = Iox(m(i), r(i), l(i));
-    elseif (orient(i) == 'y') || (orient(i) == 'Y')
+    elseif (index == 2)
         I{i} = Ioy(m(i), r(i), l(i));
     else
         I{i} = Ioz(m(i), r(i), l(i));
@@ -181,8 +183,6 @@ for k = 1:n
     end
 end
 
-dq = sym('dq', [n 1], 'real'); % joint velocities
-
 %% The Coriolis matrix
 C_sym = zeros(n,n,'sym');
 for k = 1:n
@@ -211,9 +211,9 @@ end
 % end
 
 %% Dynamics matrices
-%M_sym = simplify(M_sym);
-%C_sym = simplify(C_sym);
-%g_sym = simplify(g_sym);
+% M_sym = simplify(M_sym);
+% C_sym = simplify(C_sym);
+% g_sym = simplify(g_sym);
 
 %% Generate numeric functions
 matlabFunction(M_sym,'File','get_M','Vars',{[eta;q]});
