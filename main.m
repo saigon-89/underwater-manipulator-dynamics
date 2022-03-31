@@ -32,7 +32,6 @@ eval(strcat('orient = ',answer{6}));
 Rot0 = str2num(answer{7});
 
 q = sym('q', [n 1], 'real'); % generalized coordinates vector
-dq = sym('dq', [n 1], 'real'); % joint velocities
 
 %% D-H Parameter Matrix
 answer = inputdlg('you can use q(i) and l(i) values  [ a | alpha | d | q ]', ...
@@ -181,6 +180,8 @@ for k = 1:n
         end
     end
 end
+
+dq = sym('dq', [n 1], 'real'); % joint velocities
 
 %% The Coriolis matrix
 C_sym = zeros(n,n,'sym');
