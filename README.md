@@ -65,7 +65,7 @@ eta = [ x; y; z; phi; theta; psi ];
 ```
 
 ### Homogeneous transformations solution
-Matrix 'Tr0' contains rotation and translation terms of base 
+Matrix `Tr0` contains rotation and translation terms of base 
 ```matlab
 Tr = cell(n,1);
 Tr0 = eye(4,'sym'); Tr0(1:3,1:3) = Rot0 * Rot(eta); Tr0(1:3,4) = eta(1:3);
@@ -77,7 +77,7 @@ end
 ```
 
 ### Mass centers for each link
-Mass centers are variables of 'q' values, so we need to find general solution for each COM
+Mass centers are variables of `q` values, so we need to find general solution for each COM (`r_c_m`)
 ```matlab
 r_c_m = cell(n,1);
 for i = 1:n    
