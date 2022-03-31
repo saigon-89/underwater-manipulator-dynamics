@@ -13,3 +13,7 @@ q = sym('q', [n 1], 'real'); % generalized coordinates vector
 DH = [ 0    pi/2  l(1) q(1); ...
        l(2) 0     0    q(2); ...
        l(3) 0     0    q(3)];   
+       
+c{1} = [0; -l(1)/2; 0];
+c{2} = [-l(2)/2; 0; 0];
+c{3} = [-l(3)/2; 0; 0];
