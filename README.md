@@ -200,7 +200,7 @@ To describe the robot kinematics, the Denavit-Hartenberg representation is used
 
 # Sources
 1. Mark W. Spong, Seth Hutchinson, and Mathukumalli Vidyasagar. Robot modeling and control. John Wiley and Sons, Hoboken (N.J.), 2006.
-2.
+2. Bruno Siciliano and Oussama Khatib. Springer Handbook of Rob. Springer Berlin Heidelberg, 2008.
 
 # TO DO List
 - [X] Symbollic check of method
