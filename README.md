@@ -198,7 +198,11 @@ To describe the robot kinematics, the Denavit-Hartenberg representation is used
 
 *Kinematic model can be found [here](https://www.wolframcloud.com/objects/demonstrations/DenavitHartenbergParametersForAThreeLinkRobot-source.nb)*
 
-## TO DO List
+# Sources
+1. Mark W. Spong, Seth Hutchinson, and Mathukumalli Vidyasagar. Robot modeling and control. John Wiley and Sons, Hoboken (N.J.), 2006.
+2.
+
+# TO DO List
 - [X] Symbollic check of method
 - [ ] Hydrodynamic part calculation
     - [X] Added mass 
