@@ -217,7 +217,7 @@ g_sym = simplify(g_sym);
 
 %% Generate numeric functions
 matlabFunction(M_sym,'File','get_M','Vars',{[eta;q]});
-matlabFunction(C_sym,'File','get_C','Vars',{[eta;q;qd]});
+matlabFunction(C_sym,'File','get_C','Vars',{[eta;q;dq]});
 matlabFunction(g_sym,'File','get_g','Vars',{[eta;q]});
 
 %% Motion equations
