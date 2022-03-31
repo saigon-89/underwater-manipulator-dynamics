@@ -4,7 +4,7 @@ l = [1; 1]; % link length [m]
 r = [0.1; 0.1]; % radius [m]
 m = [1; 1]; % mass of each link [kg]
 B = [0; 0]; % buoyancy [N] 
-orient = {'x'; 'x'};
+orient = ['x'; 'x'];
 Rot0 = rotx(90); % rotation matrix
 
 q = sym('q', [n 1], 'real'); % generalized coordinates vector
