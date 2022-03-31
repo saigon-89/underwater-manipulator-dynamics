@@ -12,3 +12,6 @@ q = sym('q', [n 1], 'real'); % generalized coordinates vector
 %%%%%% a  alpha d   q %%%%%%
 DH = [l(1)  0   0  q(1); ...
       l(2)  0   0  q(2)];   
+      
+c{1} = [-l(1)/2; 0; 0];
+c{2} = [-l(2)/2; 0; 0];
