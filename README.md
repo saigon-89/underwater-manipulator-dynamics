@@ -103,8 +103,8 @@ end
 ```
 
 ### Jacobians
+Velocity Jacobians calculations can be found in [1]
 ```matlab
-%% Velocity Jacobians
 Jv = cell(1,n);
 Jw = cell(1,n);
 for i = 1:n
@@ -180,6 +180,7 @@ end
 ```
 
 ### Numeric functions generation
+Symbollic expressions replacing by numeric with [matlabFunction](https://www.mathworks.com/help/symbolic/matlabfunction.html)
 ```matlab
 matlabFunction(M_sym,'File','get_M','Vars',{[eta;q]});
 matlabFunction(C_sym,'File','get_C','Vars',{[eta;q;dq]});
@@ -187,7 +188,7 @@ matlabFunction(g_sym,'File','get_g','Vars',{[eta;q]});
 ```
 
 ## D-H parameters
-To describe the robot kinematics, the Denavit-Hartenberg representation is used
+To describe the robot kinematics, the Denavit-Hartenberg representation is used [2]
 
 **D-H table of RRR-robot example:** *(can be found in `examples/RRR_robot.m`)*
 | Link | a | ⍺ | d | q |
