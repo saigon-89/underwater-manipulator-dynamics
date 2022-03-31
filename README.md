@@ -57,6 +57,24 @@ Ioy = @(m, r, l) (m.*diag([(3*r^2 + l^2)/12, 0.5*r^2, (3*r^2 + l^2)/12]));
 Ioz = @(m, r, l) (m.*diag([(3*r^2 + l^2)/12, (3*r^2 + l^2)/12, 0.5*r^2]));
 ```
 
+### Base generalized coordinates (6-DOF)
+Base position described with 6-DOF
+```matlab
+syms x y z phi theta psi
+eta = [ x; y; z; phi; theta; psi ];
+```
+
+### Homogeneous transformations solution
+```matlab
+Tr = cell(n,1);
+Tr0 = eye(4,'sym'); Tr0(1:3,1:3) = Rot0 * Rot(eta); Tr0(1:3,4) = eta(1:3);
+T = Tr0;
+for i = 1:n
+    T = T * A(DH(i,1),DH(i,2),DH(i,3),DH(i,4));
+    Tr{i} = simplify(T);
+end
+```
+
 ## D-H parameters
 To describe the robot kinematics, the Denavit-Hartenberg representation is used
 
