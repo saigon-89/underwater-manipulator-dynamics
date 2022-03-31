@@ -58,7 +58,7 @@ Ioz = @(m, r, l) (m.*diag([(3*r^2 + l^2)/12, (3*r^2 + l^2)/12, 0.5*r^2]));
 ```
 
 ### Base generalized coordinates (6-DOF)
-Base position described with 6-DOF
+Base position described with 6-DOF. Underwater vehicle is possible manipulator base
 ```matlab
 syms x y z phi theta psi
 eta = [ x; y; z; phi; theta; psi ];
