@@ -65,6 +65,7 @@ eta = [ x; y; z; phi; theta; psi ];
 ```
 
 ### Homogeneous transformations solution
+Matrix 'Tr0' contains rotation and translation terms of base 
 ```matlab
 Tr = cell(n,1);
 Tr0 = eye(4,'sym'); Tr0(1:3,1:3) = Rot0 * Rot(eta); Tr0(1:3,4) = eta(1:3);
@@ -76,6 +77,7 @@ end
 ```
 
 ### Mass centers for each link
+Mass centers are variables of 'q' values, so we need to find general solution for each COM
 ```matlab
 r_c_m = cell(n,1);
 for i = 1:n    
@@ -129,8 +131,8 @@ end
 ```
 
 ### Potential energy and inertia matrix
+Potential energy calculated with hight along 'OZ' axis
 ```matlab
-%% Potential energy solution / Inertia matrix solution
 PE = 0;
 M_sym = 0;
 for i = 1:n
@@ -138,8 +140,6 @@ for i = 1:n
     A = Add(m(i), r(i), l(i));
     M_sym = M_sym + (Jv{i}'*(m(i)*eye(3)+A(1:3,1:3))*Jv{i} + ...
         Jw{i}'*R*(I{i}+A(4:6,4:6))*R'*Jw{i});
-    %M_sym = M_sym + (m(i)*Jv{i}'*Jv{i} + Jw{i}'*R*I{i}*R'*Jw{i});
-    %M_sym = M_sym + (Jv{i}'*A(1:3,1:3)*Jv{i} + Jw{i}'*R*A(4:6,4:6)*R'*Jw{i});
     PE = PE + (m(i)*g - B(i))*r_c_m{i}(3);
 end
 ```
