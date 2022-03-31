@@ -211,9 +211,9 @@ end
 % end
 
 %% Dynamics matrices
-M_sym = simplify(M_sym);
-C_sym = simplify(C_sym);
-g_sym = simplify(g_sym);
+%M_sym = simplify(M_sym);
+%C_sym = simplify(C_sym);
+%g_sym = simplify(g_sym);
 
 %% Generate numeric functions
 matlabFunction(M_sym,'File','get_M','Vars',{[eta;q]});
