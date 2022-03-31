@@ -18,7 +18,7 @@ rho = 1000; % fluid density
 ### Function handlers
 Function handlers are used to simplify readability of code
 
-Rotation matrix from D-H table [1]
+Rotation matrix from D-H table row [1]
 ```matlab
 A = @(a, alpha, d, q) ...
         ([cos(q) -sin(q)*cos(alpha)  sin(q)*sin(alpha) a*cos(q); ...
@@ -38,7 +38,7 @@ Add = @(m, r, l) ...
           (pi*rho*r^2*l^3)/12]));
 ```
 
-Rotation matrix [1]
+[Rotation matrix](https://en.wikipedia.org/wiki/Rotation_matrix) from three Euler angles of base [1]
 ```matlab
 Rot = @(eta) ...
         [cos(eta(6))*cos(eta(5)) sin(eta(6))*cos(eta(5)) -sin(eta(5)); ...
@@ -50,7 +50,7 @@ Rot = @(eta) ...
         cos(eta(4))*cos(eta(5))];
 ```
 
-[Inertia tensors](https://vk.com/away.php?to=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FList_of_moments_of_inertia) of cylindrical body 
+[Inertia tensors](https://vk.com/away.php?to=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FList_of_moments_of_inertia) of cylindrical body for each position along axes 
 ```matlab
 Iox = @(m, r, l) (m.*diag([0.5*r^2, (3*r^2 + l^2)/12, (3*r^2 + l^2)/12]));
 Ioy = @(m, r, l) (m.*diag([(3*r^2 + l^2)/12, 0.5*r^2, (3*r^2 + l^2)/12]));
