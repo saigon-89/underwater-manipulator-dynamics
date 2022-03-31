@@ -15,6 +15,8 @@ To describe the robot kinematics, the Denavit-Hartenberg representation is used
 | 2 | l(2) | 0 | 0 | q(2) |
 | 3 | l(3) | 0 | 0 | q(3) |
 
+*Kinematic model can be found [here](https://www.wolframcloud.com/objects/demonstrations/DenavitHartenbergParametersForAThreeLinkRobot-source.nb)*
+
 ## TO DO List
 - [X] Symbollic check of method
 - [ ] Hydrodynamic part calculation
