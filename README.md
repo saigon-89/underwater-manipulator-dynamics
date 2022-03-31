@@ -27,7 +27,7 @@ A = @(a, alpha, d, q) ...
           0       0                  0                 1]);
 ```
 
-Added mass of cylindrical body [Antonelli/Fossen]
+Added mass of cylindrical body [3]
 ```matlab
 Add = @(m, r, l) ...
         (diag([0.1*m; ...
@@ -50,7 +50,7 @@ Rot = @(eta) ...
         cos(eta(4))*cos(eta(5))];
 ```
 
-Inertia tensors of cylindrical body [Wiki]
+[Inertia tensors](https://vk.com/away.php?to=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FList_of_moments_of_inertia) of cylindrical body 
 ```matlab
 Iox = @(m, r, l) (m.*diag([0.5*r^2, (3*r^2 + l^2)/12, (3*r^2 + l^2)/12]));
 Ioy = @(m, r, l) (m.*diag([(3*r^2 + l^2)/12, 0.5*r^2, (3*r^2 + l^2)/12]));
@@ -202,6 +202,7 @@ To describe the robot kinematics, the Denavit-Hartenberg representation is used 
 # Sources
 1. Mark W. Spong, Seth Hutchinson, and Mathukumalli Vidyasagar. Robot modeling and control. John Wiley and Sons, Hoboken (N.J.), 2006.
 2. Bruno Siciliano and Oussama Khatib. Springer Handbook of Rob. Springer Berlin Heidelberg, 2008.
+3. Antonelli, G. Underwater Robots. 3rd. Springer, 2014.
 
 # TO DO List
 - [X] Symbollic check of method
