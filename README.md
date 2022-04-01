@@ -18,6 +18,7 @@
 4. [Sources](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics#sources)
 
 ## Assumptions
+- each link approximated as cylindrical body
 - mass centers of the links are equal to the centers of buoyancy
 - friction forces aren't included in the calculations
 - end-effector dynamics aren't considered
