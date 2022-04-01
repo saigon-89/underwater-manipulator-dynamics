@@ -131,7 +131,7 @@ end
 ```
 
 ### Potential energy and inertia matrix
-Potential energy calculated with hight along 'OZ' axis
+Potential energy calculated with hight along **OZ** axis
 ```matlab
 PE = 0;
 M_sym = 0;
@@ -145,6 +145,8 @@ end
 ```
 
 ### The Christoffel symbols
+[The Christoffel symbols](https://en.wikipedia.org/wiki/Christoffel_symbols) are used to calculate Coriolis terms
+Note that calculation requires only inertia matrix at input
 ```matlab
 c = zeros(n,n,n,'sym');
 for k = 1:n
@@ -172,6 +174,7 @@ end
 ```
 
 ### The gravitation terms
+Potential energy gradient [1]
 ```matlab
 g_sym = zeros(n,1,'sym');
 for k = 1:n
