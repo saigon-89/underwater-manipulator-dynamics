@@ -96,7 +96,7 @@ end
 ```
 
 ### Mass centers for each link
-Mass centers are variables of `q` values, so we need to find general solution for each COM (`r_c_m`)
+Mass centers are variables of `q(i)` values, so we need to find general solution with rotation terms for each link COM (`r_c_m{i}`)
 ```matlab
 r_c_m = cell(n,1);
 for i = 1:n    
