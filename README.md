@@ -194,7 +194,7 @@ matlabFunction(g_sym,'File','get_g','Vars',{[eta;q]});
 ## D-H parameters
 To describe the robot kinematics, the Denavit-Hartenberg representation is used [2]
 
-**D-H table of RRR-robot example:** *(can be found in `examples/RRR_robot.m`)*
+**D-H table of RRR-robot example:** (can be found in `examples/RRR_robot.m`)
 | Link | a | ⍺ | d | q |
 |:-:|:-:|:-:|:-:|:-:|
 | 1 | 0 | pi/2 | l(1) | q(1) |
