@@ -146,7 +146,8 @@ end
 
 ### The Christoffel symbols
 [The Christoffel symbols](https://en.wikipedia.org/wiki/Christoffel_symbols) are used to calculate Coriolis terms
-Note that calculation requires only inertia matrix at input
+
+*Note that calculation requires only inertia matrix at input*
 ```matlab
 c = zeros(n,n,n,'sym');
 for k = 1:n
