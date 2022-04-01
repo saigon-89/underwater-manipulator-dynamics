@@ -1,4 +1,5 @@
 # Underwater mobile-base manipulator dynamics calculator
+[1. Assumptions](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics/blob/main/README.md#assumptions)
 ## Assumptions
 - mass centers of the links are equal to the centers of buoyancy
 - friction forces aren't included in the calculations
