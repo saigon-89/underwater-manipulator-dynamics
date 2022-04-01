@@ -1,7 +1,7 @@
 # Underwater mobile-base manipulator dynamics calculator
 1. [Assumptions](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics/blob/main/README.md#assumptions)
 2. [Description](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics/blob/main/README.md#description)
-  2.1 [Input GUI](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics/blob/main/README.md#input-gui)
+    2.1 [Input GUI](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics/blob/main/README.md#input-gui)
 ## Assumptions
 - mass centers of the links are equal to the centers of buoyancy
 - friction forces aren't included in the calculations
