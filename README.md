@@ -1,7 +1,22 @@
 # Underwater mobile-base manipulator dynamics calculator
 1. [Assumptions](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics/blob/main/README.md#assumptions)
 2. [Description](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics/blob/main/README.md#description)
-    2.1 [Input GUI](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics/blob/main/README.md#input-gui)
+    1. [Input GUI](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics/blob/main/README.md#input-gui)
+    2. [Constants](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics/blob/main/README.md#constants)
+    3. [Function handlers](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics/blob/main/README.md#function-handlers)
+    4. [Base generalized coordinates (6-DOF)](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics#base-generalized-coordinates-6-dof)
+    5. [Homogeneous transformations solution](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics#homogeneous-transformations-solution)
+    6. [Mass centers for each link](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics#mass-centers-for-each-link)
+    7. [Inertia tensors](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics#inertia-tensors)
+    8. [Jacobians](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics#jacobians)
+    9. [Potential energy and inertia matrix](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics#potential-energy-and-inertia-matrix)
+    10. [The Christoffel symbols](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics#the-christoffel-symbols)
+    11. [The Coriolis matrix](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics#the-coriolis-matrix)
+    12. [The gravitation terms](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics#the-gravitation-terms)
+    13. [Numeric functions generation](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics#numeric-functions-generation)
+3. [D-H parameters](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics#d-h-parameters)
+4. [Sources](https://github.com/saigon-89/underwater-mobile-manipulator-dynamics#sources)
+
 ## Assumptions
 - mass centers of the links are equal to the centers of buoyancy
 - friction forces aren't included in the calculations
