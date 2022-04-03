@@ -37,7 +37,7 @@ rho = 1000; % fluid density
 ### Function handlers
 Function handlers are used to simplify readability of code
 
-Rotation matrix from D-H table row [1]
+Transform matrix from D-H table row [1]
 ```matlab
 A = @(a, alpha, d, q) ...
         ([cos(q) -sin(q)*cos(alpha)  sin(q)*sin(alpha) a*cos(q); ...
