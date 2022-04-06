@@ -20,7 +20,7 @@
 ## Assumptions
 - each link approximated as cylindrical body
 - mass centers of the links are equal to the centers of buoyancy
-- friction forces aren't included in the calculations
+- whole friction forces aren't included in the calculations
 - end-effector dynamics aren't considered
 - damping forces aren't considered
 - numeric functions for dynamics matrices generated with MATLAB `symbolic -> numeric` conversion
