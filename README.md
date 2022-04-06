@@ -195,6 +195,9 @@ end
 ```
 
 ### Joint friction terms
+```matlab
+D_sym = diag(mu);
+```
 
 ### The gravitation terms
 Potential energy gradient [1]
