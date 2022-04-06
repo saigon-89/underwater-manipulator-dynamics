@@ -24,6 +24,7 @@
 - end-effector dynamics aren't considered
 - damping forces aren't considered
 - numeric functions for dynamics matrices generated with MATLAB `symbolic -> numeric` conversion
+- joint angle limits are omitted
 
 ## Description
 ### Input GUI
