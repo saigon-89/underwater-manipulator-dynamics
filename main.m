@@ -9,10 +9,11 @@ prompt = {'\sigma [0 if revolute, 1 if prismatic]:',
     'link radius [m]:',
     'mass of each link [kg]:',  
     'buoyancy of each link [N]:', 
+    'friction of each joint [const]:', 
     'R_0 rotation matrix [ex.: rotx(deg)]:'};
 dlgtitle = 'Input parameters';
 dims = [1 45];
-definput = {'zeros(n,1)','[]','[]','[]','[]','eye(3)'};
+definput = {'zeros(n,1)','[]','[]','[]','[]','zeros(n,1)','eye(3)'};
 options.Interpreter = 'tex';
 answer = inputdlg(prompt,dlgtitle,dims,definput,options);
 
@@ -27,7 +28,8 @@ l = str2num(answer{2});
 r = str2num(answer{3});
 m = str2num(answer{4});
 B = str2num(answer{5});
-Rot0 = str2num(answer{6});
+mu = str2num(answer{6});
+Rot0 = str2num(answer{7});
 
 q = sym('q', [n 1], 'real'); % generalized coordinates vector
 
@@ -195,6 +197,9 @@ for k = 1:n
     end
 end
 
+%% Friction terms
+D_sym = diag(mu);
+
 %% The gravitation terms
 g_sym = zeros(n,1,'sym');
 for k = 1:n
@@ -222,4 +227,4 @@ matlabFunction(g_sym,'File','get_g','Vars',{[eta;q]});
 
 %% Motion equations
 % ddq = sym('ddq', [n 1], 'real'); 
-% tau = M_sym*ddq + C_sym*dq + g_sym
+% tau = M_sym*ddq + C_sym*dq + D_sym*dq + g_sym
