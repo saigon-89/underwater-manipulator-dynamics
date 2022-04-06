@@ -194,6 +194,8 @@ for k = 1:n
 end
 ```
 
+### Joint friction terms
+
 ### The gravitation terms
 Potential energy gradient [1]
 ```matlab
