@@ -102,7 +102,7 @@ for i = 1:n
 end
 ```
 
-### Inertia tensors
+### Inertia tensors, added mass matrices
 Inertia tensor and added mass matrix for each link relative to the inertial frame 
 
 computation depends on COM offset
