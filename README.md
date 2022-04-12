@@ -49,13 +49,9 @@ A = @(a, alpha, d, q) ...
 
 Added mass of cylindrical body [3]
 ```matlab
-Add = @(m, r, l) ...
-        (diag([0.1*m; ...
-          pi*rho*r^2*l; ...
-          pi*rho*r^2*l; ...
-          0; ...
-          (pi*rho*r^2*l^3)/12; ...
-          (pi*rho*r^2*l^3)/12]));
+Addox = @(m, r, l) (diag([0.1*m; pi*rho*r^2*l; pi*rho*r^2*l; 0; (pi*rho*r^2*l^3)/12; (pi*rho*r^2*l^3)/12]));
+Addoy = @(m, r, l) (diag([pi*rho*r^2*l; 0.1*m; pi*rho*r^2*l; (pi*rho*r^2*l^3)/12; 0; (pi*rho*r^2*l^3)/12]));
+Addoz = @(m, r, l) (diag([pi*rho*r^2*l; pi*rho*r^2*l; 0.1*m; (pi*rho*r^2*l^3)/12; (pi*rho*r^2*l^3)/12; 0]));
 ```
 
 [Rotation matrix](https://en.wikipedia.org/wiki/Rotation_matrix) from three Euler angles of base [1]
@@ -107,21 +103,26 @@ end
 ```
 
 ### Inertia tensors
-Inertia tensor for each link relative to the inertial frame 
+Inertia tensor and added mass matrix for each link relative to the inertial frame 
 
 computation depends on COM offset
 ```matlab
 I = cell(1,n);
+A = cell(1,n);
 for i = 1:n
     [~, index] = max(abs(c{i}));
     if (index == 1) 
         I{i} = Iox(m(i), r(i), l(i));
+	A{i} = Addox(m(i), r(i), l(i));
     elseif (index == 2)
         I{i} = Ioy(m(i), r(i), l(i));
+	A{i} = Addoy(m(i), r(i), l(i));
     else
         I{i} = Ioz(m(i), r(i), l(i));
+	A{i} = Addoz(m(i), r(i), l(i));
     end
 end
+
 ```
 
 ### Jacobians
@@ -157,9 +158,8 @@ PE = 0;
 M_sym = 0;
 for i = 1:n
     R = Tr{i}(1:3,1:3);
-    A = Add(m(i), r(i), l(i));
-    M_sym = M_sym + (Jv{i}'*(m(i)*eye(3)+A(1:3,1:3))*Jv{i} + ...
-        Jw{i}'*R*(I{i}+A(4:6,4:6))*R'*Jw{i});
+    M_sym = M_sym + (Jv{i}'*(m(i)*eye(3)+A{i}(1:3,1:3))*Jv{i} + ...
+        Jw{i}'*R*(I{i}+A{i}(4:6,4:6))*R'*Jw{i});
     PE = PE + (m(i)*g - B(i))*r_c_m{i}(3);
 end
 ```
