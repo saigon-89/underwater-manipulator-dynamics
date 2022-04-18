@@ -1,5 +1,6 @@
 n = 2; % link number
 sigma = [0; 0]; % 0 if revolute, 1 if prismatic
+mu = [0.5; 0.5]; % dry friction
 l = [1; 1]; % link length [m]
 r = [0.1; 0.1]; % radius [m]
 m = [1; 1]; % mass of each link [kg]
