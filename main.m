@@ -196,7 +196,7 @@ for k = 1:n
 end
 
 %% Friction terms
-D_sym = diag(mu);
+D_sym = mu.*eye(n,'sym');
 
 %% The gravitation terms
 g_sym = zeros(n,1,'sym');
@@ -221,6 +221,7 @@ end
 %% Generate numeric functions
 matlabFunction(M_sym,'File','get_M','Vars',{[eta;q]});
 matlabFunction(C_sym,'File','get_C','Vars',{[eta;q;dq]});
+matlabFunction(D_sym,'File','get_D','Vars',{[eta;q;dq]});
 matlabFunction(g_sym,'File','get_g','Vars',{[eta;q]});
 
 %% Motion equations
