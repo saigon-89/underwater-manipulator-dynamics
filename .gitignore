@@ -1,2 +1,5 @@
 get_*.m
 *.asv
+slprj
+*.slx c
+*.slxc
