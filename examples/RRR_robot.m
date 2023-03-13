@@ -7,6 +7,8 @@ m = [0.75; 1; 1]; % mass of each link [kg]
 B = [0; 0; 0]; % buoyancy [N] 
 Rot0 = eye(3); % rotation matrix
 
+eta = [ 0; 0; 0; 0; 0; 0 ]; % base generalized coordinates (6-DOF)
+
 q = sym('q', [n 1], 'real'); % generalized coordinates vector
 
 %%%%%% a    alpha d    q %%%%%%
@@ -17,3 +19,9 @@ DH = [ 0    pi/2  l(1) q(1); ...
 c{1} = [0; -l(1)/2; 0];
 c{2} = [-l(2)/2; 0; 0];
 c{3} = [-l(3)/2; 0; 0];
+
+dq = sym('dq', [n 1], 'real'); % joint velocities
+
+%% Constants
+g = 9.81; % gravitational acceleration constant
+rho = 0; % fluid density

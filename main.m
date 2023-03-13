@@ -1,59 +1,7 @@
 clear; clc;
 
-%% GUI Input Form
-answer = inputdlg('link number (n)','Enter link number', [1 30]);
-n = str2num(answer{1}); % link number
-
-prompt = {'\sigma [0 if revolute, 1 if prismatic]:',
-    'link length [m]:',
-    'link radius [m]:',
-    'mass of each link [kg]:',  
-    'buoyancy of each link [N]:', 
-    'friction of each joint [const]:', 
-    'R_0 rotation matrix [ex.: rotx(deg)]:'};
-dlgtitle = 'Input parameters';
-dims = [1 45];
-definput = {'zeros(n,1)','[]','[]','[]','[]','zeros(n,1)','eye(3)'};
-options.Interpreter = 'tex';
-answer = inputdlg(prompt,dlgtitle,dims,definput,options);
-
-% sigma = sym('sigma', [n 1], 'integer');
-% l = sym('l', [n 1], 'real'); % link length [m]
-% r = sym('r', [n 1], 'real'); % radius [m]
-% m = sym('m', [n 1], 'real'); % mass of each link [kg]
-% B = sym('B', [n 1], 'real'); % buoyancy [N] 
-
-sigma = str2num(answer{1});
-l = str2num(answer{2});
-r = str2num(answer{3});
-m = str2num(answer{4});
-B = str2num(answer{5});
-mu = str2num(answer{6});
-Rot0 = str2num(answer{7});
-
-q = sym('q', [n 1], 'real'); % generalized coordinates vector
-
-%% D-H Parameter Matrix
-answer = inputdlg('you can use q(i) and l(i) values  [ a | alpha | d | q ]', ...
-    'Enter D-H table', [n 35], {'[]'});
-eval(strcat('DH = ',answer{1}));   
-
-%% Mass centers coordinates in link-based frame
-c = cell(n,1);
-prompt = cell(n,1);
-for i = 1:n
-    prompt{i} = strcat(num2str(i),'-st center');
-end
-answer = inputdlg(prompt,'Link-based frame mass centers', [1 55]);
-for i = 1:n
-    c{i} = str2num(answer{i}); 
-end
-
-dq = sym('dq', [n 1], 'real'); % joint velocities
-
-%% Constants
-g = 9.81; % gravitational acceleration constant
-rho = 1000; % fluid density
+%% Load parameters from file
+run("examples\RRR_robot.m")
 
 %% Function handlers
 % Rotation matrix from D-H table
@@ -80,10 +28,6 @@ Rot = @(eta) ...
 Iox = @(m, r, l) (m.*diag([0.5*r^2, (3*r^2 + l^2)/12, (3*r^2 + l^2)/12]));
 Ioy = @(m, r, l) (m.*diag([(3*r^2 + l^2)/12, 0.5*r^2, (3*r^2 + l^2)/12]));
 Ioz = @(m, r, l) (m.*diag([(3*r^2 + l^2)/12, (3*r^2 + l^2)/12, 0.5*r^2]));
-    
-%% Base generalized coordinates (6-DOF)
-syms x y z phi theta psi
-eta = [ x; y; z; phi; theta; psi ];
 
 %% Homogeneous transformations solution
 Tr = cell(n,1);
@@ -109,38 +53,55 @@ for i = 1:n
     [~, index] = max(abs(c{i}));
     if (index == 1) 
         I{i} = Iox(m(i), r(i), l(i));
-	A{i} = Addox(m(i), r(i), l(i));
+        if (rho == 0)
+            A{i} = zeros(6);
+        else
+            A{i} = Addox(m(i), r(i), l(i));
+        end
     elseif (index == 2)
         I{i} = Ioy(m(i), r(i), l(i));
-	A{i} = Addoy(m(i), r(i), l(i));
+        if (rho == 0)
+            A{i} = zeros(6);
+        else
+            A{i} = Addoy(m(i), r(i), l(i));
+        end
     else
         I{i} = Ioz(m(i), r(i), l(i));
-	A{i} = Addoz(m(i), r(i), l(i));
+        if (rho == 0)
+            A{i} = zeros(6);
+        else    
+            A{i} = Addoz(m(i), r(i), l(i));
+        end
     end
 end
 
 %% Velocity Jacobians
-Jv = cell(1,n);
-Jw = cell(1,n);
+Jv = cell(1,n); Jv_ee = cell(1,n);
+Jw = cell(1,n); Jw_ee = cell(1,n);
 for i = 1:n
     z = Tr0(1:3,3);
     o = Tr0(1:3,4);
     Jvt = sym(zeros(3,n));
+    Jvt_ee = sym(zeros(3,n));
     Jwt = sym(zeros(3,n));
     for j = 1:i
         if (sigma(i) == 0)
             Jvt(:,j) = cross(z, r_c_m{i}-o);
+            Jvt_ee(:,j) = cross(z, o);
             Jwt(:,j) = z;
         else
             Jvt(:,j) = z;
+            Jvt_ee(:,j) = z;
             Jwt(:,j) = 0;
         end
         z = Tr{j}(1:3,3);
         o = Tr{j}(1:3,4);
     end
     Jv{i} = simplify(Jvt);
+    Jv_ee{i} = simplify(Jvt_ee);
     Jw{i} = simplify(Jwt);
 end
+Jw_ee = Jw;
 
 %% Same result calculation
 % Jv = cell(1,n);
@@ -219,11 +180,62 @@ end
 % g_sym = simplify(g_sym);
 
 %% Generate numeric functions
-matlabFunction(M_sym,'File','get_M','Vars',{[eta;q]});
-matlabFunction(C_sym,'File','get_C','Vars',{[eta;q;dq]});
-matlabFunction(D_sym,'File','get_D','Vars',{[eta;q;dq]});
-matlabFunction(g_sym,'File','get_g','Vars',{[eta;q]});
+matlabFunction(M_sym,'File','get_M','Vars',{q});
+matlabFunction(C_sym,'File','get_C','Vars',{[q;dq]});
+matlabFunction(D_sym,'File','get_D','Vars',{[q;dq]});
+matlabFunction(g_sym,'File','get_g','Vars',{q});
+
+matlabFunction(Jv_ee{n},'File','get_Jv_ee','Vars',{q});
+matlabFunction(Jw_ee{n},'File','get_Jw_ee','Vars',{q});
+matlabFunction([Jv_ee{n};Jw_ee{n}],'File','get_J_ee','Vars',{q});
+
+matlabFunction(Tr{n}(1:3,4),'File','get_X_ee','Vars',{q});
 
 %% Motion equations
 % ddq = sym('ddq', [n 1], 'real'); 
 % tau = M_sym*ddq + C_sym*dq + D_sym*dq + g_sym
+
+%% ode45 calculation
+tau = [0;0;0];
+h_e = [0;0;0;0;0;0];
+q0 = deg2rad([0; 0; 0]); 
+dq0 = zeros(n,1);
+t_end = 30; dt = 0.05;
+[t,Y] = ode45(@(t,y)odefcn(t,y,tau,h_e), 0:dt:t_end, [q0; dq0]);
+
+%% Plot graphs
+figure
+subplot(1,2,1)
+q_vect = Y(:,1:n);
+plot(t, q_vect) 
+title('Generalized coordinates'), grid on
+xlabel('t, sec'), ylabel('q_i(t), m or deg'), xlim([0 t_end])
+labels = [];
+for i = 1:n
+    labels = [labels; strcat('q_', num2str(i), '(t)')];
+end
+legend(cellstr(labels))
+
+subplot(1,2,2)
+X_ee = zeros(length(q_vect), 3);
+for i=1:length(q_vect)
+    X_ee(i,:) = get_X_ee(q_vect(i,:)');
+end
+plot(t, X_ee)
+title('End-effector position'), grid on
+xlabel('t, sec'), ylabel('Position, m'), xlim([0 t_end])
+legend('X_{ee}(1)', 'X_{ee}(2)', 'X_{ee}(3)')
+
+% manip_animation(q,q_vect,Tr,dt);
+
+function dx = odefcn(t,x,tau,h_e)
+    n = numel(x)/2;
+
+    A = [zeros(n), eye(n);
+         zeros(n), -get_M(x(1:n))^-1 * ( get_C(x) + get_D(x) )];
+    B = [zeros(n); get_M(x(1:n))^-1];
+   
+    u = -get_g(x(1:n)) + get_J_ee(x(1:n))'*h_e + tau;
+
+    dx = A*x + B*u;
+end
