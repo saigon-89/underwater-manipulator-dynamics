@@ -1,7 +1,7 @@
 clear; clc;
 
 %% Load parameters from file
-run("examples\RRR_robot.m")
+run("examples\RR_robot.m")
 
 %% Function handlers
 % Rotation matrix from D-H table
@@ -76,32 +76,34 @@ for i = 1:n
 end
 
 %% Velocity Jacobians
-Jv = cell(1,n); Jv_ee = cell(1,n);
-Jw = cell(1,n); Jw_ee = cell(1,n);
+Jv = cell(1,n);
+Jw = cell(1,n);
 for i = 1:n
     z = Tr0(1:3,3);
     o = Tr0(1:3,4);
     Jvt = sym(zeros(3,n));
-    Jvt_ee = sym(zeros(3,n));
     Jwt = sym(zeros(3,n));
     for j = 1:i
         if (sigma(i) == 0)
             Jvt(:,j) = cross(z, r_c_m{i}-o);
-            Jvt_ee(:,j) = cross(z, o);
             Jwt(:,j) = z;
         else
             Jvt(:,j) = z;
-            Jvt_ee(:,j) = z;
             Jwt(:,j) = 0;
         end
         z = Tr{j}(1:3,3);
         o = Tr{j}(1:3,4);
     end
     Jv{i} = simplify(Jvt);
-    Jv_ee{i} = simplify(Jvt_ee);
     Jw{i} = simplify(Jwt);
 end
-Jw_ee = Jw;
+
+Jvt_ee = sym(zeros(3,n));
+for i=1:n
+    Jvt_ee(:,i) = diff(Tr{n}(1:3,4), q(i));
+end
+Jv_ee = simplify(Jvt_ee);
+Jw_ee = Jw{n}; %% TODO
 
 %% Same result calculation
 % Jv = cell(1,n);
@@ -185,9 +187,9 @@ matlabFunction(C_sym,'File','get_C','Vars',{[q;dq]});
 matlabFunction(D_sym,'File','get_D','Vars',{[q;dq]});
 matlabFunction(g_sym,'File','get_g','Vars',{q});
 
-matlabFunction(Jv_ee{n},'File','get_Jv_ee','Vars',{q});
-matlabFunction(Jw_ee{n},'File','get_Jw_ee','Vars',{q});
-matlabFunction([Jv_ee{n};Jw_ee{n}],'File','get_J_ee','Vars',{q});
+matlabFunction(Jv_ee,'File','get_Jv_ee','Vars',{q});
+matlabFunction(Jw_ee,'File','get_Jw_ee','Vars',{q});
+matlabFunction([Jv_ee;Jw_ee],'File','get_J_ee','Vars',{q});
 
 matlabFunction(Tr{n}(1:3,4),'File','get_X_ee','Vars',{q});
 
@@ -196,9 +198,9 @@ matlabFunction(Tr{n}(1:3,4),'File','get_X_ee','Vars',{q});
 % tau = M_sym*ddq + C_sym*dq + D_sym*dq + g_sym
 
 %% ode45 calculation
-tau = [0;0;0];
+tau = [0;0];
 h_e = [0;0;0;0;0;0];
-q0 = deg2rad([0; 0; 0]); 
+q0 = deg2rad([0; 0]); 
 dq0 = zeros(n,1);
 t_end = 30; dt = 0.05;
 [t,Y] = ode45(@(t,y)odefcn(t,y,tau,h_e), 0:dt:t_end, [q0; dq0]);
