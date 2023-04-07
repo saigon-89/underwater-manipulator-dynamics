@@ -25,3 +25,7 @@ dq = sym('dq', [n 1], 'real'); % joint velocities
 %% Constants
 g = 9.81; % gravitational acceleration constant
 rho = 0; % fluid density
+
+%% Initial Conditions
+q0 = deg2rad([0; 0; 0]); 
+dq0 = zeros(n,1);

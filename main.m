@@ -198,10 +198,8 @@ matlabFunction(Tr{n}(1:3,4),'File','get_X_ee','Vars',{q});
 % tau = M_sym*ddq + C_sym*dq + D_sym*dq + g_sym
 
 %% ode45 calculation
-tau = [0;0];
-h_e = [0;0;0;0;0;0];
-q0 = deg2rad([0; 0]); 
-dq0 = zeros(n,1);
+tau = zeros(n,1);
+h_e = [0;0;0];
 t_end = 30; dt = 0.05;
 [t,Y] = ode45(@(t,y)odefcn(t,y,tau,h_e), 0:dt:t_end, [q0; dq0]);
 
@@ -237,7 +235,7 @@ function dx = odefcn(t,x,tau,h_e)
          zeros(n), -get_M(x(1:n))^-1 * ( get_C(x) + get_D(x) )];
     B = [zeros(n); get_M(x(1:n))^-1];
    
-    u = -get_g(x(1:n)) + get_J_ee(x(1:n))'*h_e + tau;
+    u = -get_g(x(1:n)) + get_Jv_ee(x(1:n))'*h_e + tau;
 
     dx = A*x + B*u;
 end
